@@ -21,7 +21,7 @@ const Total = (props) => {
     let sum = 0
     props.parts.map(e => e.exercises).forEach(e => sum += e)
     return (
-        <p>Number of exercises {sum}</p>
+        <p><strong>total of {sum} exercises</strong></p>
     )
 }
 
