@@ -1,7 +1,7 @@
 const Header = (props) => {
     // console.log(props)
     return (
-        <h1>{props.course}</h1>
+        <h2>{props.course}</h2>
     )
 }
 
@@ -13,7 +13,9 @@ const Part = (props) => {
 
 const Content = ({parts}) => {
     return (
-        parts.map(e => <li key={e.id}><Part part={e.name} exercises={e.exercises} /></li>)
+        <ul>
+        {parts.map(e => <li key={e.id}><Part part={e.name} exercises={e.exercises} /></li>)}
+        </ul>
     )
 }
 
