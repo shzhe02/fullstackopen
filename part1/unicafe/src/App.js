@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const Button = (props) => <button onClick={props.handler}>{props.label}</button>
 
-const StatisticAverage = (props) => <tr><td>average</td> <td>{(props.good - props.bad) / props.total}</td></tr>
+const StatisticAverage = (props) => <tr><td>average</td><td>{(props.good - props.bad) / props.total}</td></tr>
 
 const StatisticPositive = (props) => <tr><td>positive</td><td>{(props.good / props.total) * 100} %</td></tr>
 
@@ -13,14 +13,16 @@ const Statistics = (props) => {
     return (<p>No feedback given</p>)
   }
   return (
-    <>
-      <StatisticLine text="good" value={props.good}/>
-      <StatisticLine text="neutral" value={props.neutral}/>
-      <StatisticLine text="bad" value={props.bad}/>
-      <StatisticLine text="all" value={props.total}/>
-      <StatisticAverage good={props.good} bad={props.bad} total={props.total} />
-      <StatisticPositive good={props.good} bad={props.bad} total={props.total} />
-    </>
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={props.good}/>
+        <StatisticLine text="neutral" value={props.neutral}/>
+        <StatisticLine text="bad" value={props.bad}/>
+        <StatisticLine text="all" value={props.total}/>
+        <StatisticAverage good={props.good} bad={props.bad} total={props.total} />
+        <StatisticPositive good={props.good} bad={props.bad} total={props.total} />
+      </tbody>
+    </table>
   )
 }
 
