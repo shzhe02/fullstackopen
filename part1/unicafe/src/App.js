@@ -6,6 +6,22 @@ const Average = (props) => (props.good - props.bad) / props.total
 
 const Positive = (props) => (props.good / props.total) * 100
 
+const Statistics = (props) => {
+  return (
+    <>
+      <h1>statictics</h1>
+      <p>
+        good {props.good}<br />
+        neutral {props.neutral}<br />
+        bad {props.bad}<br />
+        all {props.total}<br />
+        average <Average good={props.good} bad={props.bad} total={props.total} /><br />
+        positive <Positive good={props.good} bad={props.bad} total={props.total} />%
+      </p>
+    </>
+  )
+}
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -32,15 +48,7 @@ const App = () => {
       <Button handler={addGood} label="good" />
       <Button handler={addNeutral} label="neutral" />
       <Button handler={addBad} label="bad" />
-      <h1>statictics</h1>
-      <p>
-        good {good}<br />
-        neutral {neutral}<br />
-        bad {bad}<br />
-        all {total}<br />
-        average <Average good={good} bad={bad} total={total} /><br />
-        positive <Positive good={good} bad={bad} total={total} />%
-      </p>
+      <Statistics good={good} neutral={neutral} bad={bad} total={total}/>
     </div>
   )
 }
