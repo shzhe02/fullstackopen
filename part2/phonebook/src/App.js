@@ -11,8 +11,17 @@ const App = () => {
     const nameObject = {
         name: newName
     }
-    setPersons(persons.concat(nameObject))
-    setNewName("")
+    const alreadyExists = persons
+        .map(e => e.name === newName)
+        .reduce((collect, b) => collect || b)
+    if (!alreadyExists) {
+        setPersons(persons.concat(nameObject))
+        setNewName("")
+    } else {
+        alert(`${newName} has already been added to the phonebook.`)
+    }
+    
+    
   }
 
   const handleChange = (event) => {
