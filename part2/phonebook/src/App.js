@@ -81,6 +81,8 @@ const App = () => {
         persons={persons}
         searchkey={searchkey}
         setPersons={setPersons}
+        setNotifMessage={setNotifMessage}
+        setError={setError}
       />
     </div>
   )
