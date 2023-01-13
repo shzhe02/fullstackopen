@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import PersonForm from "./components/PersonForm"
 import Persons from "./components/Persons"
 import Filter from "./components/Filter"
+import Notification from "./components/Notification"
 import db from "./services/db"
 
 const App = () => {
@@ -10,6 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
   const [searchkey, setSearchkey] = useState("")
+  const [notifMessage, setNotifMessage] = useState("")
+  const [isError, setError] = useState(false)
 
   useEffect(() => {
     db.fetch().then((persons) => setPersons(persons))
@@ -26,6 +29,9 @@ const App = () => {
       .reduce((collect, b) => collect || b)
     if (!alreadyExists) {
       db.add(nameObject).then((data) => setPersons(persons.concat(data)))
+      setNotifMessage(`Added ${newName}`)
+      setError(false)
+      setTimeout(() => setNotifMessage(""), 5000)
       setNewName("")
       setNewNumber("")
     } else {
@@ -36,8 +42,11 @@ const App = () => {
         )
       ) {
         const id = persons.find((e) => e.name === newName).id
-        db.update(nameObject, id).then((response) => console.log(response))
+        db.update(nameObject, id)
         db.fetch().then((data) => setPersons(data))
+        setNotifMessage(`${newName}'s number has been updated`)
+        setError(false)
+        setTimeout(() => setNotifMessage(""), 5000)
         setNewName("")
         setNewNumber("")
       }
@@ -57,6 +66,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notifMessage} error={isError} />
       <Filter searchkey={searchkey} handleSearchkey={handleSearchkey} />
       <h3>Add a new</h3>
       <PersonForm
