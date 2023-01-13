@@ -27,6 +27,11 @@ const App = () => {
       .map((e) => e.name === newName)
       .reduce((collect, b) => collect || b)
     if (!alreadyExists) {
+      axios
+        .post("http://localhost:3001/persons", nameObject)
+        .then((response) => {
+          console.log(response.data)
+        })
       setPersons(persons.concat(nameObject))
       setNewName("")
       setNewNumber("")
