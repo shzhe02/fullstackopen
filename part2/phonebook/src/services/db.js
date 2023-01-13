@@ -17,6 +17,11 @@ const remove = (id) => {
   return request.then((response) => response.data)
 }
 
-const utils = { fetch, add, remove }
+const update = (data, id) => {
+  const request = axios.put(`${url}/${id}`, data)
+  return request.then((response) => response.data)
+}
+
+const utils = { fetch, add, remove, update }
 
 export default utils

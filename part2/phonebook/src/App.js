@@ -25,12 +25,22 @@ const App = () => {
       .map((e) => e.name === newName)
       .reduce((collect, b) => collect || b)
     if (!alreadyExists) {
-      db.add(nameObject).then((response) => console.log(response))
-      setPersons(persons.concat(nameObject))
+      db.add(nameObject).then((data) => setPersons(persons.concat(data)))
       setNewName("")
       setNewNumber("")
     } else {
-      alert(`${newName} has already been added to the phonebook.`)
+      // alert(`${newName} has already been added to the phonebook.`)
+      if (
+        window.confirm(
+          `${newName} is already in the phonebook. Replace the old number with a new one?`
+        )
+      ) {
+        const id = persons.find((e) => e.name === newName).id
+        db.update(nameObject, id).then((response) => console.log(response))
+        db.fetch().then((data) => setPersons(data))
+        setNewName("")
+        setNewNumber("")
+      }
     }
   }
 
