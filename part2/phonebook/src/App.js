@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import PersonForm from "./components/PersonForm"
 import Persons from "./components/Persons"
 import Filter from "./components/Filter"
-import axios from "axios"
+import db from "./services/db"
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,9 +12,7 @@ const App = () => {
   const [searchkey, setSearchkey] = useState("")
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data)
-    })
+    db.fetch().then((persons) => setPersons(persons))
   }, [])
 
   const addEntry = (event) => {
@@ -27,11 +25,7 @@ const App = () => {
       .map((e) => e.name === newName)
       .reduce((collect, b) => collect || b)
     if (!alreadyExists) {
-      axios
-        .post("http://localhost:3001/persons", nameObject)
-        .then((response) => {
-          console.log(response.data)
-        })
+      db.add(nameObject).then((response) => console.log(response))
       setPersons(persons.concat(nameObject))
       setNewName("")
       setNewNumber("")
@@ -63,7 +57,11 @@ const App = () => {
         handleNumber={handleNumber}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} searchkey={searchkey} />
+      <Persons
+        persons={persons}
+        searchkey={searchkey}
+        setPersons={setPersons}
+      />
     </div>
   )
 }
