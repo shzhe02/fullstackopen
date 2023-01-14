@@ -1,7 +1,10 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
 
+app.use(express.static("build"))
 app.use(express.json())
+app.use(cors())
 
 let notes = [
   {
@@ -75,7 +78,19 @@ app.post("/api/notes", (request, response) => {
   response.json(note)
 })
 
-const PORT = 3001
+app.put("/api/notes/:id", (request, response) => {
+  const body = request.body
+  const id = Number(request.params.id)
+
+  const found = notes.find((note) => note.id === id)
+  if (!found) {
+    return response.status(404).end()
+  }
+  notes = notes.map((note) => (note.id === id ? body : note))
+  return response.status(200).json(body).end()
+})
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
