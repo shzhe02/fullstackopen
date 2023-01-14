@@ -1,10 +1,26 @@
-const { application } = require("express")
 const express = require("express")
 const app = express()
 const morgan = require("morgan")
 
 app.use(express.json())
-app.use(morgan(":method :url :status :res[content-length] - :response-time ms"))
+
+const log = (tokens, request, response) => {
+  //console.log(tokens)
+  //console.log(request)
+  //console.log(response)
+  return [
+    tokens.method(request, response),
+    tokens.url(request, response),
+    tokens.status(request, response),
+    tokens.res(request, response, "content-length"),
+    "-",
+    tokens["response-time"](request, response),
+    "ms",
+    JSON.stringify(request.body),
+  ].join(" ")
+}
+
+app.use(morgan(log))
 
 let data = [
   {
