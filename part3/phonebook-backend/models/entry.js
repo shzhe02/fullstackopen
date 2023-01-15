@@ -19,6 +19,11 @@ const entrySchema = new mongoose.Schema({
   number: {
     type: String,
     required: true,
+    validate: {
+      validator: function (v) {
+        return /^\d{2,3}-\d{6,}$|^\d{8,}$/.test(v)
+      },
+    },
   },
 })
 
