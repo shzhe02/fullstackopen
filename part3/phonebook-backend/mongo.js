@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 mongoose.set("strictQuery", true)
 const password = process.argv[2]
 
-const url = `mongodb+srv://fstack:${password}@cluster0.3anbqly.mongodb.net/?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URI
 
 const entrySchema = new mongoose.Schema({
   name: String,

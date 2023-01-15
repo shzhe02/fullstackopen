@@ -1,16 +1,15 @@
+require("dotenv").config()
 const express = require("express")
 const app = express()
 const morgan = require("morgan")
 const cors = require("cors")
+const Entry = require("./models/entry")
 
 app.use(express.json())
 app.use(express.static("build"))
 app.use(cors())
 
 const log = (tokens, request, response) => {
-  //console.log(tokens)
-  //console.log(request)
-  //console.log(response)
   return [
     tokens.method(request, response),
     tokens.url(request, response),
@@ -49,7 +48,7 @@ let data = [
 ]
 
 app.get("/api/persons", (request, response) => {
-  response.json(data)
+  Entry.find({}).then((entries) => response.json(entries))
 })
 
 app.get("/info", (request, response) => {
@@ -77,27 +76,20 @@ app.delete("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body
+  console.log(body)
 
-  // Input validation
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: "no content",
-    })
-  } else if (data.find((entry) => entry.name === body.name)) {
-    return response.status(400).json({
-      error: "name must be unique",
-    })
+  if (body.name === undefined || body.number === undefined) {
+    return response.status(400).json({ error: "content missing" })
   }
 
-  const entry = {
-    id: Math.floor(Math.random() * 1000000),
+  const entry = new Entry({
     name: body.name,
     number: body.number,
-  }
+  })
 
-  data = data.concat(entry)
-
-  response.json(entry)
+  entry.save().then((savedEntry) => {
+    response.json(savedEntry)
+  })
 })
 
 const PORT = process.env.PORT || 3001
