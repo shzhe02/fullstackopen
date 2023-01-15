@@ -38,7 +38,7 @@ app.get("/info", (request, response) => {
   })
 })
 
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   Entry.findById(request.params.id)
     .then((entry) =>
       entry ? response.json(entry) : response.status(404).end()

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 mongoose.set("strictQuery", true)
-const password = process.argv[2]
 
 const url = process.env.MONGODB_URI
 
