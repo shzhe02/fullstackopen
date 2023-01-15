@@ -28,14 +28,21 @@ const App = () => {
       .map((e) => e.name === newName)
       .reduce((collect, b) => collect || b)
     if (!alreadyExists) {
-      db.add(nameObject).then((data) => setPersons(persons.concat(data)))
-      setNotifMessage(`Added ${newName}`)
-      setError(false)
-      setTimeout(() => setNotifMessage(""), 5000)
-      setNewName("")
-      setNewNumber("")
+      db.add(nameObject)
+        .then((data) => {
+          setPersons(persons.concat(data))
+          setError(false)
+          setNotifMessage(`Added ${newName}`)
+          setTimeout(() => setNotifMessage(""), 5000)
+          setNewName("")
+          setNewNumber("")
+        })
+        .catch((error) => {
+          setError(true)
+          setNotifMessage(error.response.data.error)
+          setTimeout(() => setNotifMessage(""), 5000)
+        })
     } else {
-      // alert(`${newName} has already been added to the phonebook.`)
       if (
         window.confirm(
           `${newName} is already in the phonebook. Replace the old number with a new one?`
@@ -43,12 +50,19 @@ const App = () => {
       ) {
         const id = persons.find((e) => e.name === newName).id
         db.update(nameObject, id)
-        db.fetch().then((data) => setPersons(data))
-        setNotifMessage(`${newName}'s number has been updated`)
-        setError(false)
-        setTimeout(() => setNotifMessage(""), 5000)
-        setNewName("")
-        setNewNumber("")
+          .then(() => {
+            db.fetch().then((data) => setPersons(data))
+            setNotifMessage(`${newName}'s number has been updated`)
+            setError(false)
+            setTimeout(() => setNotifMessage(""), 5000)
+            setNewName("")
+            setNewNumber("")
+          })
+          .catch((error) => {
+            setError(true)
+            setNotifMessage(error.response.data.error)
+            setTimeout(() => setNotifMessage(""), 5000)
+          })
       }
     }
   }
