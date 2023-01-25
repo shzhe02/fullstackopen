@@ -43,6 +43,23 @@ test("a new blog can be added", async () => {
   expect(titles).toContain("Tester Four")
 })
 
+test("likes property defaults to 0", async () => {
+  const newBlog = {
+    title: "Tester Four",
+    author: "Fourth Tester",
+    url: "testerfour.com",
+  }
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/)
+
+  const result = await helper.blogsInDb()
+  const recentlyAdded = result.find((e) => e.title === "Tester Four")
+  expect(recentlyAdded.likes).toBeDefined()
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

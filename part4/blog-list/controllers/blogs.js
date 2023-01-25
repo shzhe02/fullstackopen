@@ -8,9 +8,16 @@ blogsRouter.get("/", (request, response) => {
 })
 
 blogsRouter.post("/", (request, response) => {
-  const blog = new Blog(request.body)
+  const blog = request.body
 
-  const savedBlog = blog.save()
+  const newBlog = new Blog({
+    title: blog.title,
+    author: blog.author,
+    url: blog.url,
+    likes: blog.likes || 0,
+  })
+
+  const savedBlog = newBlog.save()
   response.status(201).json(savedBlog)
 })
 
