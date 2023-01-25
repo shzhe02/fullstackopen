@@ -21,8 +21,26 @@ test("all blogs are returned", async () => {
 
 test("id property is present", async () => {
   const response = await api.get("/api/blogs")
-  console.log(response.body)
   expect(response.body[0].id).toBeDefined()
+})
+
+test("a new blog can be added", async () => {
+  const newBlog = {
+    title: "Tester Four",
+    author: "Fourth Tester",
+    url: "testerfour.com",
+    likes: 4,
+  }
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/)
+
+  const result = await helper.blogsInDb()
+  expect(result).toHaveLength(helper.initialBlogs.length + 1)
+  const titles = result.map((n) => n.title)
+  expect(titles).toContain("Tester Four")
 })
 
 afterAll(async () => {
