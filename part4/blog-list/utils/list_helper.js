@@ -50,7 +50,6 @@ const mostLikes = (blogs) => {
     }
     authorLikes.push(authorEntry)
   })
-  console.log(authorLikes)
   return lodash.maxBy(authorLikes, (e) => e.likes)
 }
 
