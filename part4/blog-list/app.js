@@ -6,7 +6,7 @@ const blogsRouter = require("./controllers/blogs")
 const mongoose = require("mongoose")
 
 //const mongoUrl = "mongodb://localhost/bloglist"
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect(config.MONGO_URL)
 
 app.use(cors())
 app.use(express.json())

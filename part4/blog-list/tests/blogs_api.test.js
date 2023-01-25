@@ -60,6 +60,24 @@ test("likes property defaults to 0", async () => {
   expect(recentlyAdded.likes).toBeDefined()
 })
 
+test("request marked as 400 if title field is not present", async () => {
+  const missingTitle = {
+    author: "Fourth Tester",
+    url: "testerfour.com",
+    likes: 4,
+  }
+  await api.post("/api/blogs").send(missingTitle).expect(400)
+})
+
+test("request marked as 400 if url field is not present", async () => {
+  const missingUrl = {
+    title: "Tester Five",
+    author: "Fifth Tester",
+    likes: 5,
+  }
+  await api.post("/api/blogs").send(missingUrl).expect(400)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
