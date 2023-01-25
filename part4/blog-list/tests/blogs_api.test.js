@@ -15,10 +15,14 @@ beforeEach(async () => {
 })
 
 test("all blogs are returned", async () => {
-  await api
-    .get("/api/blogs")
-    .expect(200)
-    .expect("Content-Type", /application\/json/)
+  const response = await api.get("/api/blogs")
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
+})
+
+test("id property is present", async () => {
+  const response = await api.get("/api/blogs")
+  console.log(response.body)
+  expect(response.body[0].id).toBeDefined()
 })
 
 afterAll(async () => {
