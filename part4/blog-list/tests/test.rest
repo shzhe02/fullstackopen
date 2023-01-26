@@ -7,3 +7,18 @@ content-type: application/json
   "url": "another.com",
   "likes": 15
 }
+
+###
+
+POST http://localhost:3003/api/users/ HTTP/1.1
+content-type: application/json
+
+{
+  "username": "Person One",
+  "name": "One P.",
+  "password": "woahwoahwoah"
+}
+
+###
+
+GET http://localhost:3003/api/users/
