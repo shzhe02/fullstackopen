@@ -8,8 +8,27 @@ usersRouter.get("/", async (_, response) => {
 })
 
 usersRouter.post("/", async (request, response) => {
-  console.log("fired")
   const { username, name, password } = request.body
+
+  // Input verification
+  if (!(username && password)) {
+    return response.status(400).json({
+      error: "username or password missing",
+    })
+  } else if (username.length <= 3 || password.lenth <= 3) {
+    return response.status(400).json({
+      error:
+        "either username or password is too short; they must be more than 3 characters long",
+    })
+  }
+
+  const existingUsernames = (await User.find({})).map((e) => e.username)
+  if (existingUsernames.includes(username)) {
+    return response.status(400).json({
+      error: "Username is already in use",
+    })
+  }
+
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
