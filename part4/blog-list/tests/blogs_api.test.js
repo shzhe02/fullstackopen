@@ -95,6 +95,28 @@ test("deleting by id works", async () => {
   expect(deleted).not.toBeDefined()
 })
 
+test("updating a blog works", async () => {
+  const initial = {
+    title: "Tester Seven",
+    author: "Seventh Tester",
+    url: "testerseven.com",
+    likes: 0,
+  }
+  const updated = {
+    title: "Tester Seven",
+    author: "Seventh Tester",
+    url: "testerseven.com",
+    likes: 7,
+  }
+  await api.post("/api/blogs").send(initial).expect(201)
+  const before = await helper.blogsInDb()
+  const added = before.find((blog) => blog.title === "Tester Seven")
+  expect(added.likes).toBe(0)
+  await api.put(`/api/blogs/${added.id}`).send(updated)
+  const after = await helper.blogsInDb()
+  expect(after.find((blog) => blog.title === "Tester Seven").likes).toBe(7)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
