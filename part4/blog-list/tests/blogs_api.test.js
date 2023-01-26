@@ -78,6 +78,23 @@ test("request marked as 400 if url field is not present", async () => {
   await api.post("/api/blogs").send(missingUrl).expect(400)
 })
 
+test("deleting by id works", async () => {
+  const newBlog = {
+    title: "Tester Six",
+    author: "Sixth Tester",
+    url: "testersix.com",
+    likes: 6,
+  }
+  await api.post("/api/blogs").send(newBlog).expect(201)
+  const before = await helper.blogsInDb()
+  const added = before.find((blog) => blog.title === "Tester Six")
+  expect(added).toBeDefined()
+  await api.delete(`/api/blogs/${added.id}`).expect(204)
+  const after = await helper.blogsInDb()
+  const deleted = after.find((blog) => blog.title === "Tester Six")
+  expect(deleted).not.toBeDefined()
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
