@@ -26,3 +26,23 @@ GET http://localhost:3003/api/users/
 ###
 
 GET http://localhost:3003/api/blogs/
+
+###
+
+POST http://localhost:3003/api/login/ HTTP/1.1
+content-type: application/json
+
+{
+  "username": "Person One",
+  "password": "woahwoahwoah"
+}
+
+###
+
+POST http://localhost:3003/api/login/ HTTP/1.1
+content-type: application/json
+
+{
+  "username": "Person One",
+  "password": "woahwoah"
+}
